@@ -8,8 +8,8 @@ const userSlice = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder
-            .addCase(registerUser.fulfilled, (_state, action) => action.payload)
-            .addCase(fetchUser.fulfilled, (_state, action) => action.payload)
+            .addCase(registerUser.fulfilled, (_state, action) => action.payload.user)
+            .addCase(fetchUser.fulfilled, (_state, action) => action.payload.user)
     }
 })
 

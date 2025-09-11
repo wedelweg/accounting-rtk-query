@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import type {UserRegister} from "../../utils/types";
-import {base_url} from "../../utils/constants.ts";
+import {base_url, createToken} from "../../utils/constants.ts";
 
 
 export const registerUser = createAsyncThunk(
@@ -20,7 +20,9 @@ export const registerUser = createAsyncThunk(
         if (!response.ok) {
             throw new Error(`Something went wrong: ${response.statusText}`);
         }
-        return await response.json();
+        const data = await response.json();
+        const token = createToken(user.login, user.password);
+        return {user: data, token};
     }
 )
 
@@ -34,13 +36,15 @@ export const fetchUser = createAsyncThunk(
                     'Authorization': token
                 }
             })
-        // if (response.status === 409) {
-        //     throw new Error(`User ${user.login} already exists`);
-        // }
+        //TODO
+        if (response.status === 401) {
+            throw new Error(`login or password is incorrect`);
+        }
         if (!response.ok) {
             throw new Error(`Something went wrong: ${response.statusText}`);
         }
-        return await response.json();
+        const data = await response.json();
+        return {user: data, token};
     }
 )
 
