@@ -1,6 +1,6 @@
 import {useState} from "react";
-import {UpdateMode} from "../../utils/types";
 import EditProfile from "./EditProfile.tsx";
+import {UpdateMode} from "../../utils/types.d";
 
 const UpdateData = () => {
     const [updateMode, setUpdateMode] = useState(UpdateMode.DEFAULT);
