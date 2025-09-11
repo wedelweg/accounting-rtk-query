@@ -1,0 +1,15 @@
+
+export interface UserData {
+    firstName: string,
+    lastName: string
+}
+
+export interface UserRegister extends UserData{
+    login: string,
+    password: string,
+}
+
+export interface UserProfile extends UserData{
+    login: string,
+    roles: string[]
+}
