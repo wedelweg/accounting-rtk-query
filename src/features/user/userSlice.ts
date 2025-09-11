@@ -5,7 +5,9 @@ import type {UserProfile} from "../../utils/types";
 const userSlice = createSlice({
     name: 'user',
     initialState: {} as UserProfile,
-    reducers: {},
+    reducers: {
+        clearUser: () => ({} as UserProfile)
+    },
     extraReducers: builder => {
         builder
             .addCase(registerUser.fulfilled, (_state, action) => action.payload.user)
@@ -13,4 +15,5 @@ const userSlice = createSlice({
     }
 })
 
+export const {clearUser} = userSlice.actions;
 export default userSlice.reducer;
