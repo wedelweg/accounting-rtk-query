@@ -1,6 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import type {UserRegister} from "../../utils/types";
+import type {UserData, UserRegister} from "../../utils/types";
 import {base_url, createToken} from "../../utils/constants.ts";
+import type {RootState} from "../../app/store.ts";
 
 
 export const registerUser = createAsyncThunk(
@@ -48,3 +49,25 @@ export const fetchUser = createAsyncThunk(
     }
 )
 
+export const updateUser = createAsyncThunk<UserData, UserData, { state: RootState }>(
+    'user/update',
+    async (user, {getState}) => {
+        const response = await fetch(`${base_url}/account/user/${getState().user.login}`,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': getState().token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+        if (response.status === 401) {
+            throw new Error(`login or password is incorrect`);
+        }
+        if (!response.ok) {
+            throw new Error(`Something went wrong: ${response.statusText}`);
+        }
+        const {firstName, lastName} = await response.json();
+        return {firstName, lastName};
+    }
+)
