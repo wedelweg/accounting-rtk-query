@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {fetchUser, registerUser} from "../api/accountApi.ts";
+import {changePassword, fetchUser, registerUser} from "../api/accountApi.ts";
 
 
 const tokenSlice = createSlice({
@@ -13,6 +13,7 @@ const tokenSlice = createSlice({
         builder
             .addCase(fetchUser.fulfilled, (_state, action) => action.payload.token)
             .addCase(registerUser.fulfilled, (_state, action) => action.payload.token)
+            .addCase(changePassword.fulfilled, (_state, action) => action.payload)
     }
 })
 

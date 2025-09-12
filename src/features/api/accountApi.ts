@@ -71,3 +71,27 @@ export const updateUser = createAsyncThunk<UserData, UserData, { state: RootStat
         return {firstName, lastName};
     }
 )
+
+
+export const changePassword = createAsyncThunk<string,
+    { oldPassword: string, newPassword: string }, { state: RootState }>(
+    'user/password',
+    async ({oldPassword, newPassword}, {getState}) => {
+        const response = await fetch(`${base_url}/account/password`,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': createToken(getState().user.login, oldPassword),
+                    'X-Password': newPassword
+                }
+            })
+        if (response.status === 401) {
+            throw new Error(`login or password is incorrect`);
+        }
+        if (!response.ok) {
+            throw new Error(`Something went wrong: ${response.statusText}`);
+        }
+
+        return createToken(getState().user.login, newPassword);
+    }
+)

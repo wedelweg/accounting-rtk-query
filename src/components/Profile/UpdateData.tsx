@@ -1,6 +1,7 @@
 import {useState} from "react";
 import EditProfile from "./EditProfile.tsx";
 import {UpdateMode} from "../../utils/types.d";
+import ChangePassword from "./ChangePassword.tsx";
 
 const UpdateData = () => {
     const [updateMode, setUpdateMode] = useState(UpdateMode.DEFAULT);
@@ -9,7 +10,7 @@ const UpdateData = () => {
         case UpdateMode.EDIT_PROFILE:
             return <EditProfile close={()=> setUpdateMode(UpdateMode.DEFAULT)}/>;
         case UpdateMode.CHANGE_PASSWORD:
-            return;
+            return <ChangePassword close={()=> setUpdateMode(UpdateMode.DEFAULT)}/>;
         default:
             return (
                 <div>
