@@ -1,22 +1,21 @@
-import ProfileData from "./ProfileData.tsx";
-import UpdateData from "./UpdateData.tsx";
-import {useAppDispatch} from "../../app/hooks.ts";
-import {clearToken} from "../../features/token/tokenSlice.ts";
-import {clearUser} from "../../features/user/userSlice.ts";
+import ProfileData from "./ProfileData";
+import UpdateData from "./UpdateData";
+import { useAppDispatch } from "../../app/hooks";
+import { clearAuth } from "../../app/store";
 
 const Profile = () => {
     const dispatch = useAppDispatch();
 
     const handleClickLogOut = () => {
-        dispatch(clearUser());
-        dispatch(clearToken());
-    }
+        dispatch(clearAuth());
+        localStorage.removeItem("state");
+    };
 
     return (
         <div>
-            <ProfileData/>
+            <ProfileData />
             <button onClick={handleClickLogOut}>LogOut</button>
-            <UpdateData/>
+            <UpdateData />
         </div>
     );
 };

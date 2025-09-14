@@ -1,19 +1,24 @@
 export enum UpdateMode {
-    DEFAULT, EDIT_PROFILE, CHANGE_PASSWORD
+    DEFAULT,
+    EDIT_PROFILE,
+    CHANGE_PASSWORD
 }
 
-
 export interface UserData {
-    firstName: string,
-    lastName: string
+    firstName: string;
+    lastName: string;
 }
 
 export interface UserRegister extends UserData {
-    login: string,
-    password: string,
+    login: string;
+    password: string;
 }
 
 export interface UserProfile extends UserData {
-    login: string,
-    roles: string[]
+    login: string;
+    roles: string[];
+}
+
+export interface UserUpdate extends UserData {
+    login: string;
 }

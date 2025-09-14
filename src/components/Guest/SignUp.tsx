@@ -1,57 +1,43 @@
-import {useState} from "react";
-import {useAppDispatch} from "../../app/hooks.ts";
-import {registerUser} from "../../features/api/accountApi.ts";
+import { useState } from "react";
+import { useRegisterUserMutation } from "../../features/api/accountApi";
+import { useAppDispatch } from "../../app/hooks";
+import { setAuth } from "../../app/store";
 
 const SignUp = () => {
-    const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+    const [login, setLogin] = useState("");
+    const [password, setPassword] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [registerUser, { isLoading, error }] = useRegisterUserMutation();
     const dispatch = useAppDispatch();
 
-    const handleClickSignUp = () => {
-        dispatch(registerUser({login, password, firstName, lastName}))
-    }
+    const handleClickSignUp = async () => {
+        try {
+            const { user, token } = await registerUser({ login, password, firstName, lastName }).unwrap();
+            dispatch(setAuth({ user, token }));
+        } catch (e) {
+            console.error("Registration failed", e);
+        }
+    };
 
     const handleClickClear = () => {
-        setPassword("");
         setLogin("");
-        setFirstName('');
-        setLastName('');
-    }
+        setPassword("");
+        setFirstName("");
+        setLastName("");
+    };
 
     return (
         <div>
-            <label>Login:
-                <input
-                    type={'text'}
-                    onChange={e => setLogin(e.target.value)}
-                    value={login}
-                />
-            </label>
-            <label>Password:
-                <input
-                    type={'password'}
-                    onChange={e => setPassword(e.target.value)}
-                    value={password}
-                />
-            </label>
-            <label>FirstName:
-                <input
-                    type={'text'}
-                    onChange={e => setFirstName(e.target.value)}
-                    value={firstName}
-                />
-            </label>
-            <label>LastName:
-                <input
-                    type={'text'}
-                    onChange={e => setLastName(e.target.value)}
-                    value={lastName}
-                />
-            </label>
-            <button onClick={handleClickSignUp}>Sign Up</button>
+            <label>Login:<input type="text" value={login} onChange={(e) => setLogin(e.target.value)} /></label>
+            <label>Password:<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} /></label>
+            <label>FirstName:<input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} /></label>
+            <label>LastName:<input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} /></label>
+            <button onClick={handleClickSignUp} disabled={isLoading}>
+                {isLoading ? "Registering..." : "Sign Up"}
+            </button>
             <button onClick={handleClickClear}>Clear</button>
+            {error && <p style={{ color: "red" }}>Registration failed</p>}
         </div>
     );
 };
